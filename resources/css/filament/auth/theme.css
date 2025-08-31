@@ -1,0 +1,8 @@
+
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+@source '../../../../app/Filament';
+@source '../../../../resources/views/filament';
+
+@theme {
+  --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+}
