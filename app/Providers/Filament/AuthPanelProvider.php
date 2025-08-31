@@ -43,6 +43,7 @@ class AuthPanelProvider extends PanelProvider
                 AccountWidget::class,
                 FilamentInfoWidget::class,
             ])
+            ->darkMode(false) 
             ->viteTheme('resources/css/filament/auth/theme.css')
             ->middleware([
                 EncryptCookies::class,
