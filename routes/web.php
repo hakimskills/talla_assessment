@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Response;
 
 Route::get('/', function () {
-     return redirect('/auth');
+     return redirect('/auth/register');
 });
 Route::get('/set-locale/{locale}', function ($locale) {
         session(['locale' => $locale]);
