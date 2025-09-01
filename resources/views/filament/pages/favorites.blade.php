@@ -1,7 +1,8 @@
 <x-filament-panels::page>
     <div class="space-y-6">
         {{-- Search --}}
-        <input type="text" wire:model.debounce.500ms="search"
+        <input type="text" 
+            wire:model.live.debounce.500ms="search"
             placeholder="Search favorites..."
             class="w-full rounded-xl border-gray-300 shadow-sm"/>
 
@@ -21,11 +22,26 @@
                     </div>
                 </div>
             @endforeach
+
+            @if($this->favorites->isEmpty())
+                <p class="col-span-full text-center text-gray-500">No favorites found.</p>
+            @endif
         </div>
 
         {{-- Pagination --}}
-        <div class="mt-6">
-            {{ $this->favorites->links() }}
-        </div>
+        @php $lastPage = ceil($this->totalResults / $perPage); @endphp
+        @if ($lastPage > 1)
+            <div class="flex justify-center items-center gap-4 mt-6">
+                <x-filament::button wire:click="prevPage" :disabled="$page <= 1">
+                    Previous
+                </x-filament::button>
+
+                <span>Page {{ $page }} of {{ $lastPage }} </span>
+
+                <x-filament::button wire:click="nextPage" :disabled="$page >= $lastPage">
+                    Next
+                </x-filament::button>
+            </div>
+        @endif
     </div>
 </x-filament-panels::page>

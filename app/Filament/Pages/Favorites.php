@@ -4,22 +4,45 @@ namespace App\Filament\Pages;
 
 use Filament\Pages\Page;
 use App\Models\Favorite;
-use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
 
 class Favorites extends Page
 {
-    use WithPagination;
-
     public $search = '';
+    public $page = 1;
+    public $perPage = 12;
 
     protected string $view = 'filament.pages.favorites';
+
+    public function getTotalResultsProperty()
+    {
+        return Favorite::where('user_id', Auth::id())
+            ->when($this->search, fn($q) => $q->where('title', 'like', "%{$this->search}%"))
+            ->count();
+    }
 
     public function getFavoritesProperty()
     {
         return Favorite::where('user_id', Auth::id())
             ->when($this->search, fn($q) => $q->where('title', 'like', "%{$this->search}%"))
-            ->paginate(12);
+            ->skip(($this->page - 1) * $this->perPage)
+            ->take($this->perPage)
+            ->get();
+    }
+
+    public function prevPage()
+    {
+        if ($this->page > 1) {
+            $this->page--;
+        }
+    }
+
+    public function nextPage()
+    {
+        $lastPage = ceil($this->totalResults / $this->perPage);
+        if ($this->page < $lastPage) {
+            $this->page++;
+        }
     }
 
     public function unfavorite($id)
@@ -27,5 +50,10 @@ class Favorites extends Page
         Favorite::where('user_id', Auth::id())
             ->where('id', $id)
             ->delete();
+
+        // Go back a page if this one becomes empty
+        if ($this->page > 1 && $this->favorites->isEmpty()) {
+            $this->page--;
+        }
     }
 }
