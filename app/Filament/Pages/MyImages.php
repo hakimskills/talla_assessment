@@ -18,7 +18,7 @@ class MyImages extends Page
     public $favorites = [];
     public $search = '';
     public $page = 1;
-    public $perPage = 8;
+    public $perPage = 5;
     public $totalResults = 0;
 
     public $newTitle = '';

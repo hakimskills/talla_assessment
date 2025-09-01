@@ -12,7 +12,7 @@ class Favorites extends Page
 
     public $search = '';
     public $page = 1;
-    public $perPage = 12;
+    public $perPage = 4;
 
     /*
     |--------------------------------------------------------------------------
