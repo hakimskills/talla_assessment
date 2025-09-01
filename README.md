@@ -85,7 +85,7 @@ Access the app at [http://localhost:8000](http://localhost:8000)
 
 ## Filament Admin Panel
 
-* Default URL: `/auth `
+* Default URL: `/auth/register `
 * Create a user:
 
 
@@ -108,7 +108,7 @@ DB_PASSWORD=
 ```
 
 ---
-Or do your db connection 
+Or do your db connection variables 
 
 
 
