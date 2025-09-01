@@ -50,21 +50,24 @@ npm run build
 ```bash
 cp .env.example .env
 ```
-
-5. **Configure environment variables**
+5. Generate application key
+```bash
+php artisan key:generate
+```
+6. **Configure environment variables**
    Edit `.env`:
 
 * `DB_CONNECTION`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`
 
 
-6. **Run migrations and seed database**
+7. **Run migrations and seed database**
 
 ```bash
 php artisan migrate
 
 ```
 
-7. **Set up storage link**
+8. **Set up storage link**
 
 ```bash
 php artisan storage:link
@@ -107,11 +110,6 @@ DB_PASSWORD=
 ---
 Or do your db connection 
 
-## Localization
-
-* English (default)
-* Arabic (`resources/lang/ar/messages.php`)
-* Switch language in `config/app.php`
 
 
 
