@@ -2,6 +2,9 @@
 
 namespace App\Providers\Filament;
 
+use Filament\Navigation\MenuItem;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\App;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -43,7 +46,7 @@ class AuthPanelProvider extends PanelProvider
                 AccountWidget::class,
                 FilamentInfoWidget::class,
             ])
-            ->darkMode(false) 
+            ->darkMode(false)
             ->viteTheme('resources/css/filament/auth/theme.css')
             ->middleware([
                 EncryptCookies::class,
@@ -55,9 +58,21 @@ class AuthPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                \App\Http\Middleware\SetLocale::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->userMenuItems([
+                'lang.en' => MenuItem::make()
+                    ->label('English')
+                    ->icon('heroicon-o-language')
+                    ->url(fn () => route('set-locale', ['locale' => 'en'])),
+
+                'lang.ar' => MenuItem::make()
+                    ->label('العربية')
+                    ->icon('heroicon-o-language')
+                    ->url(fn () => route('set-locale', ['locale' => 'ar'])),
             ]);
     }
 }

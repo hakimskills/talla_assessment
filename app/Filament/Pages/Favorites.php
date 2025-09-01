@@ -8,11 +8,44 @@ use Illuminate\Support\Facades\Auth;
 
 class Favorites extends Page
 {
+    protected string $view = 'filament.pages.favorites';
+
     public $search = '';
     public $page = 1;
     public $perPage = 12;
 
-    protected string $view = 'filament.pages.favorites';
+    /*
+    |--------------------------------------------------------------------------
+    | Filament v4 Overrides (translated)
+    |--------------------------------------------------------------------------
+    */
+
+    // Page title (top bar)
+    public function getTitle(): string
+    {
+        return __('messages.favorites_title');
+    }
+
+    // Sidebar navigation label (must stay static)
+    public static function getNavigationLabel(): string
+    {
+        return __('messages.favorites_nav');
+    }
+
+    // Navigation group name (must stay static)
+   
+
+    // Breadcrumb label (optional, non-static)
+    public function getBreadcrumb(): string
+    {
+        return __('messages.favorites_nav');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Business Logic
+    |--------------------------------------------------------------------------
+    */
 
     public function getTotalResultsProperty()
     {
@@ -51,7 +84,6 @@ class Favorites extends Page
             ->where('id', $id)
             ->delete();
 
-        // Go back a page if this one becomes empty
         if ($this->page > 1 && $this->favorites->isEmpty()) {
             $this->page--;
         }

@@ -6,7 +6,7 @@
             <input
                 type="text"
                 wire:model.live.debounce.500ms="search"
-                placeholder="🔍 Search artworks..."
+                placeholder=" {{ __('messages.search_gallery') }}"
                 class="w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 px-4 py-2"
             />
         </div>
@@ -26,7 +26,7 @@
                             />
                         @else
                             <div class="w-full h-60 flex items-center justify-center text-gray-400">
-                                No Image
+                                {{ __('messages.no_image') }}
                             </div>
                         @endif
 
@@ -44,15 +44,16 @@
                             </button>
 
                             @if($image['image_url'])
-                                <a href="{{ $image['image_url'] }}" download
-                                   class="p-2 rounded-full bg-white/90 hover:bg-white shadow">
-                                    <x-heroicon-o-arrow-down-tray class="w-5 h-5 text-gray-600"/>
-                                </a>
+                                <a href="{{ route('download.image', ['url' => $image['image_url'], 'title' => $image['title']]) }}"
+                        class="p-2 rounded-full bg-white/90 hover:bg-white shadow">
+                          <x-heroicon-o-arrow-down-tray class="w-5 h-5 text-gray-600"/>
+                            </a>
+
                             @endif
                         </div>
                     </div>
                     <div class="p-3 text-sm font-medium text-gray-700 truncate">
-                        {{ $image['title'] ?: 'Untitled' }}
+                        {{ $image['title'] ?: __('messages.untitled') }}
                     </div>
                 </div>
 
@@ -83,13 +84,13 @@
         @if ($lastPage > 1)
             <div class="flex justify-center items-center gap-4 mt-6">
                 <x-filament::button wire:click="prevPage" :disabled="$page <= 1">
-                    Previous
+                    {{ __('messages.previous') }}
                 </x-filament::button>
 
-                <span>Page {{ $page }} of {{ $lastPage }}</span>
+                <span>{{ __('messages.page') }} {{ $page }} {{ __('messages.of') }} {{ $lastPage }}</span>
 
                 <x-filament::button wire:click="nextPage" :disabled="$page >= $lastPage">
-                    Next
+                    {{ __('messages.next') }}
                 </x-filament::button>
             </div>
         @endif

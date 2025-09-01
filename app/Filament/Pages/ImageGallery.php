@@ -17,6 +17,36 @@ class ImageGallery extends Page
     public $totalResults = 0;
     public $favorites = []; // artwork_id => true
 
+    /*
+    |--------------------------------------------------------------------------
+    | Filament v4 Overrides (translated)
+    |--------------------------------------------------------------------------
+    */
+
+    // Page title (top bar)
+    public function getTitle(): string
+    {
+        return __('messages.gallery_title');
+    }
+
+    // Sidebar navigation label (must stay static)
+    public static function getNavigationLabel(): string
+    {
+        return __('messages.gallery_nav');
+    }
+
+    // Breadcrumb label (optional, non-static)
+    public function getBreadcrumb(): string
+    {
+        return __('messages.gallery_nav');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Lifecycle
+    |--------------------------------------------------------------------------
+    */
+
     public function mount()
     {
         $this->loadFavorites();
@@ -33,6 +63,12 @@ class ImageGallery extends Page
     {
         $this->loadImages();
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Business Logic
+    |--------------------------------------------------------------------------
+    */
 
     public function loadFavorites()
     {
@@ -59,23 +95,14 @@ class ImageGallery extends Page
 
         // --- SEARCH ---
         if (trim($this->search) !== '') {
-        $from = ($page - 1) * $perPage;
+            $from = ($page - 1) * $perPage;
 
-        $response = Http::get('https://api.artic.edu/api/v1/artworks/search', [
-            'q'     => $this->search,
-            'fields'=> 'id,title,image_id,artist_display,date_display', // Add more fields for better matching
-            'size'  => $perPage,
-            'from'  => $from,
-            'query' => [
-                'bool' => [
-                    'should' => [
-                        ['match' => ['title' => ['query' => $this->search, 'boost' => 3]]],
-                        ['match' => ['artist_display' => ['query' => $this->search, 'boost' => 2]]],
-                        ['match' => ['_all' => $this->search]]
-                    ]
-                ]
-            ]
-        ]);
+            $response = Http::get('https://api.artic.edu/api/v1/artworks/search', [
+                'q'     => $this->search,
+                'fields'=> 'id,title,image_id,artist_display,date_display',
+                'size'  => $perPage,
+                'from'  => $from,
+            ]);
 
             if (! $response->successful()) {
                 $this->images = [];

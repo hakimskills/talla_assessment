@@ -3,7 +3,7 @@
         {{-- Search --}}
         <input type="text" 
             wire:model.live.debounce.500ms="search"
-            placeholder="Search favorites..."
+            placeholder="{{ __('messages.search_favorites') }}"
             class="w-full rounded-xl border-gray-300 shadow-sm"/>
 
         {{-- Favorites Grid --}}
@@ -24,7 +24,9 @@
             @endforeach
 
             @if($this->favorites->isEmpty())
-                <p class="col-span-full text-center text-gray-500">No favorites found.</p>
+                <p class="col-span-full text-center text-gray-500">
+                    {{ __('messages.no_favorites') }}
+                </p>
             @endif
         </div>
 
@@ -33,13 +35,15 @@
         @if ($lastPage > 1)
             <div class="flex justify-center items-center gap-4 mt-6">
                 <x-filament::button wire:click="prevPage" :disabled="$page <= 1">
-                    Previous
+                    {{ __('messages.previous') }}
                 </x-filament::button>
 
-                <span>Page {{ $page }} of {{ $lastPage }} </span>
+                <span>
+                    {{ __('messages.page') }} {{ $page }} {{ __('messages.of') }} {{ $lastPage }}
+                </span>
 
                 <x-filament::button wire:click="nextPage" :disabled="$page >= $lastPage">
-                    Next
+                    {{ __('messages.next') }}
                 </x-filament::button>
             </div>
         @endif

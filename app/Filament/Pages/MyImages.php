@@ -25,6 +25,36 @@ class MyImages extends Page
     public $newDescription = '';
     public $newFile;
 
+    /*
+    |--------------------------------------------------------------------------
+    | Filament v4 Overrides (translated)
+    |--------------------------------------------------------------------------
+    */
+
+    // Page title (top bar)
+    public function getTitle(): string
+    {
+        return __('messages.my_images_title');
+    }
+
+    // Sidebar navigation label (must stay static)
+    public static function getNavigationLabel(): string
+    {
+        return __('messages.my_images_nav');
+    }
+
+    // Breadcrumb label (optional, non-static)
+    public function getBreadcrumb(): string
+    {
+        return __('messages.my_images_nav');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Lifecycle
+    |--------------------------------------------------------------------------
+    */
+
     public function mount()
     {
         $this->loadFavorites();
@@ -41,6 +71,12 @@ class MyImages extends Page
     {
         $this->loadImages();
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Business Logic
+    |--------------------------------------------------------------------------
+    */
 
     public function loadFavorites()
     {
@@ -121,34 +157,32 @@ class MyImages extends Page
     }
 
     public function toggleFavorite($id)
-{
-    $userId = auth()->id();
-    if (! $userId) return;
+    {
+        $userId = auth()->id();
+        if (! $userId) return;
 
-    $existing = Favorite::where('user_id', $userId)
-        ->where('artwork_id', $id)
-        ->first();
+        $existing = Favorite::where('user_id', $userId)
+            ->where('artwork_id', $id)
+            ->first();
 
-    if ($existing) {
-        $existing->delete();
-        unset($this->favorites[$id]);
-    } else {
-        $image = UserImage::find($id);
+        if ($existing) {
+            $existing->delete();
+            unset($this->favorites[$id]);
+        } else {
+            $image = UserImage::find($id);
 
-        if ($image) {
-            Favorite::create([
-                'user_id'    => $userId,
-                'artwork_id' => $id,
-                'title'      => $image->title,   // ✅ Save the actual title
-                'image_url'  => asset('storage/' . $image->path), // ✅ Save full URL
-            ]);
+            if ($image) {
+                Favorite::create([
+                    'user_id'    => $userId,
+                    'artwork_id' => $id,
+                    'title'      => $image->title,
+                    'image_url'  => asset('storage/' . $image->path),
+                ]);
 
-            $this->favorites[$id] = true;
+                $this->favorites[$id] = true;
+            }
         }
+
+        $this->loadFavorites();
     }
-
-    $this->loadFavorites();
 }
-
-}
-
